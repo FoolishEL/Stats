@@ -20,20 +20,21 @@ namespace Foolish.Stats
 
                 valueProviderCached = value;
                 valueProviderCached.OnValueChanged += CalculateResultValue;
-                RefreshStats();
+                CalculateResultValue(valueProviderCached.Value);
             }
         }
         
-        IStatDecorator<T> valueProviderCached;
+        private IStatDecorator<T> valueProviderCached;
 
-        void CalculateResultValue(T wrappedValue)
+        protected SingleStatDecorator(IStatDecorator<T> decorator, bool needCyclicDispose) : base(needCyclicDispose)
         {
-            Value = CalculateResultValueInternal(wrappedValue);
+            valueProviderCached = decorator;
+            AddDecoratorToDisposable(decorator);
         }
 
-        protected sealed override void RefreshStats()
+        protected void CalculateResultValue(T wrappedValue)
         {
-            CalculateResultValue(valueProviderCached.Value);
+            Value = CalculateResultValueInternal(wrappedValue);
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace Foolish.Stats
         /// </summary>
         protected abstract T CalculateResultValueInternal(T wrappedValue);
 
-        public override void Dispose()
+        protected override void DisposeRaw()
         {
             if (valueProviderCached is not null)
             {
@@ -49,5 +50,4 @@ namespace Foolish.Stats
             }
         }
     }
-
 }

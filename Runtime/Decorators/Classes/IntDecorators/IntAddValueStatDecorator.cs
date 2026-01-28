@@ -3,7 +3,7 @@ namespace Foolish.Stats
     /// <summary>
     /// Realisation of <see cref="SingleStatDecorator{T}"/> for int values additing
     /// </summary>
-    public class IntAddValueStatDecorator : SingleStatDecorator<int> 
+    public class IntAddValueStatDecorator : SingleStatDecorator<int>
     {
         int additiveValueCached;
 
@@ -16,7 +16,7 @@ namespace Foolish.Stats
             set
             {
                 additiveValueCached = value;
-                RefreshStats();
+                CalculateResultValue(ValueProvider.Value);
             }
         }
 
@@ -25,11 +25,10 @@ namespace Foolish.Stats
         /// </summary>
         /// <param name="decorator">wrapped decorator</param>
         /// <param name="additiveValue">value to add to decorator's value</param>
-        public IntAddValueStatDecorator(IStatDecorator<int> decorator, int additiveValue)
+        /// <param name="needCyclicDispose">does this instance need to be automatically disposed when used by other decorators?</param>
+        public IntAddValueStatDecorator(IStatDecorator<int> decorator, int additiveValue, bool needCyclicDispose) : base(decorator, needCyclicDispose)
         {
-            ValueProvider = decorator;
             AdditiveValue = additiveValue;
-            RefreshStats();
         }
 
         protected override int CalculateResultValueInternal(int wrappedValue)

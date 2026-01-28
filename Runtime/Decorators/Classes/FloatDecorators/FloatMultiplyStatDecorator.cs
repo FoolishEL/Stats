@@ -1,23 +1,26 @@
 namespace Foolish.Stats
 {
     /// <summary>
-    /// Default realisation for <see cref="MultiplyBaseStatDecorator{T}"/> for float on int or float multiply
+    /// Default realisation for <see cref="CrossTypeValueOperationStatDecorator{T,T2,TV2}"/> for float on float multiply
     /// </summary>
-    public sealed class FloatMultiplyStatDecorator : MultiplyBaseStatDecorator<float>
+    public sealed class FloatMultiplyFloatValueStatDecorator : CrossTypeValueOperationStatDecorator<float, float, FloatValueProvider>
     {
-        public FloatMultiplyStatDecorator(IStatDecorator<float> decorator, int multiplyValueInt)
+        public FloatMultiplyFloatValueStatDecorator(IStatDecorator<float> decorator, float initialValueProvider, bool needCyclicDispose) : base(decorator, initialValueProvider, needCyclicDispose)
         {
-            Init(decorator, multiplyValueInt);
         }
-        
-        public FloatMultiplyStatDecorator(IStatDecorator<float> decorator, float multiplyValueFloat)
-        {
-            Init(decorator, multiplyValueFloat);
-        }
+        protected override float CalculateResultValueInternal(float wrappedValue) => wrappedValue * operationValueProvider.Value;
+        protected override void OnOperationValueChanged(float value) => Value = ValueProvider.Value * operationValueProvider.Value;
+    }
 
-        protected override float CalculateResultValueInternal(float wrappedValue)
+    /// <summary>
+    /// Default realisation for <see cref="CrossTypeValueOperationStatDecorator{T,T2,TV2}"/> for float on int multiply
+    /// </summary>
+    public sealed class FloatMultiplyIntValueStatDecorator : CrossTypeValueOperationStatDecorator<float, int, IntValueProvider>
+    {
+        public FloatMultiplyIntValueStatDecorator(IStatDecorator<float> decorator, int initialValueProvider, bool needCyclicDispose) : base(decorator, initialValueProvider, needCyclicDispose)
         {
-            return wrappedValue * (UsedIntAsMultiply ? MultiplyValueIntCached : MultiplyValueFloatCached);
         }
+        protected override float CalculateResultValueInternal(float wrappedValue) => wrappedValue * operationValueProvider.Value;
+        protected override void OnOperationValueChanged(int value) => Value = value * operationValueProvider.Value;
     }
 }

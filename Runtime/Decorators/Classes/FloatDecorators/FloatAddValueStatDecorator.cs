@@ -16,7 +16,7 @@ namespace Foolish.Stats
             set
             {
                 additiveValueCached = value;
-                RefreshStats();
+                CalculateResultValue(ValueProvider.Value);
             }
         }
 
@@ -25,12 +25,8 @@ namespace Foolish.Stats
         /// </summary>
         /// <param name="decorator">wrapped decorator</param>
         /// <param name="additiveValue">value to add to decorator's value</param>
-        public FloatAddValueStatDecorator(IStatDecorator<float> decorator, float additiveValue)
-        {
-            ValueProvider = decorator;
-            AdditiveValue = additiveValue;
-            RefreshStats();
-        }
+        /// <param name="needCyclicDispose">need </param>
+        public FloatAddValueStatDecorator(IStatDecorator<float> decorator, float additiveValue, bool needCyclicDispose) : base(decorator, needCyclicDispose) => AdditiveValue = additiveValue;
 
         protected override float CalculateResultValueInternal(float wrappedValue)
         {

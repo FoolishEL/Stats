@@ -1,29 +1,28 @@
 namespace Foolish.Stats
 {
     /// <summary>
-    /// Default realisation for <see cref="MultipleStatDecorator{T}"/> for int addtive
+    /// Default realisation for <see cref="MultipleStatDecorator{T}"/> for float addtive
     /// </summary>
-    public class IntSumStatsDecorator : MultipleStatDecorator<int>
+    public class FloatMultipleSumStatsDecorator : MultipleStatDecorator<float>
     {
+        public FloatMultipleSumStatsDecorator(bool needCyclicDispose) : base(needCyclicDispose) {}
         protected override void RefreshStats()
         {
-            var sum = 0;
+            float sum = 0f;
             foreach (var valueProvider in ValueProviders)
             {
                 sum += valueProvider.Value;
             }
-
+    
             Value = sum;
         }
-        
-        public override void Dispose()
+
+        protected override void DisposeRaw()
         {
             foreach (var valueProvider in ValueProviders)
             {
                 valueProvider.OnValueChanged -= RefreshAllStats;
-                valueProvider.Dispose();
             }
         }
     }
-
 }

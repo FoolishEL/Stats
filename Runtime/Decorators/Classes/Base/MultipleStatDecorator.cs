@@ -12,6 +12,7 @@ namespace Foolish.Stats
         /// </summary>
         protected HashSet<IStatDecorator<T>> ValueProviders = new HashSet<IStatDecorator<T>>();
 
+        protected MultipleStatDecorator(bool needCyclicDispose) : base(needCyclicDispose) { }
         /// <summary>
         /// Add new <see cref="IStatDecorator{T}"/> to be decorated
         /// </summary>
@@ -20,6 +21,7 @@ namespace Foolish.Stats
             if (ValueProviders.Add(decorator))
             {
                 decorator.OnValueChanged += RefreshAllStats;
+                AddDecoratorToDisposable(decorator);
                 RefreshStats();
                 return true;
             }
@@ -34,15 +36,15 @@ namespace Foolish.Stats
             if (ValueProviders.Remove(decorator))
             {
                 decorator.OnValueChanged -= RefreshAllStats;
+                RemoveDecoratorFromDisposable(decorator);
                 RefreshStats();
                 return true;
             }
             return false;
         }
+
+        protected void RefreshAllStats(T value) => RefreshStats();
         
-        protected void RefreshAllStats(T value)
-        {
-            RefreshStats();
-        }
+        protected abstract void RefreshStats();
     }
 }

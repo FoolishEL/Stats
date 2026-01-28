@@ -5,7 +5,7 @@ namespace Foolish.Stats
     /// <summary>
     /// basic interface for any decoratable stat
     /// </summary>
-    public interface IStatDecorator<T> : IDisposable
+    public interface IStatDecorator<T>
     {
         /// <summary>
         /// Get current value of decorator
