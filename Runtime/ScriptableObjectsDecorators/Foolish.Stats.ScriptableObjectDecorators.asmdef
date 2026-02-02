@@ -1,0 +1,23 @@
+{
+    "name": "Foolish.Stats.ScriptableObjectDecorators",
+    "rootNamespace": "Stats.ScriptableObjectDecorators",
+    "references": [
+        "GUID:af0cca29daf474170b108a857b968f27",
+        "GUID:388b322129c2845caa4e895f1f5ced96"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.foolish.utils",
+            "expression": "",
+            "define": "FOOLISH_UTILS"
+        }
+    ],
+    "noEngineReferences": false
+}

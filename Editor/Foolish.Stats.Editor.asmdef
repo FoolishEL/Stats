@@ -1,0 +1,25 @@
+{
+    "name": "Foolish.Stats.Editor",
+    "rootNamespace": "Foolish.Stats.Editor",
+    "references": [
+        "GUID:ca912528d8a614e88963c97738d6865f",
+        "GUID:44b8aefab497d4a1eae503fa74e90245"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.foolish.utils",
+            "expression": "",
+            "define": "FOOLISH_UTILS"
+        }
+    ],
+    "noEngineReferences": false
+}
