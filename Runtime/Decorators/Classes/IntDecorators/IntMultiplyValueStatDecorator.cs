@@ -12,7 +12,15 @@ namespace Foolish.Stats
         {
         }
         protected override int CalculateResultValueInternal(int wrappedValue) => wrappedValue * operationValueProvider.Value;
-        protected override void OnOperationValueChanged(int value) => Value = value * operationValueProvider.Value;
+        protected override void OnOperationValueChanged(int value)
+        {
+#if R3
+            valueCached.Value =
+#else
+            Value =
+#endif
+                value * operationValueProvider.Value;
+        }
     }
 
     /// <summary>
@@ -28,7 +36,15 @@ namespace Foolish.Stats
             this.roundOption = roundOption;
         }
         protected override int CalculateResultValueInternal(int wrappedValue) => GetResultValue(operationValueProvider.Value * wrappedValue);
-        protected override void OnOperationValueChanged(float value) => Value = GetResultValue(operationValueProvider.Value * value);
+        protected override void OnOperationValueChanged(float value)
+        {
+#if R3
+            valueCached.Value =
+#else
+            Value =
+#endif
+             GetResultValue(operationValueProvider.Value * value);
+        }
 
         int GetResultValue(float value)
         {

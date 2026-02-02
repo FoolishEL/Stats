@@ -9,6 +9,13 @@ namespace Foolish.Stats
         {
         }
         protected override float CalculateResultValueInternal(float wrappedValue) => wrappedValue + operationValueProvider.Value;
-        protected override void OnOperationValueChanged(int value) => Value = value + operationValueProvider.Value;
+        protected override void OnOperationValueChanged(int value)
+        {
+#if R3
+            valueCached.Value = value * operationValueProvider.Value;
+#else
+            Value = value + operationValueProvider.Value;
+#endif
+        }
     }
 }

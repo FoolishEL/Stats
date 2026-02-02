@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if R3
+using R3;
+#endif
 
 namespace Foolish.Stats
 {
@@ -8,6 +11,12 @@ namespace Foolish.Stats
     /// </summary>
     public abstract class AbstractStatDecorator<T> : IStatDecorator<T>, ICyclicDisposable
     {
+        
+#if R3
+        public ReadOnlyReactiveProperty<T> ReactiveValue => valueCached;
+        public T Value => valueCached.Value;
+        protected ReactiveProperty<T> valueCached;
+#else
         public T Value
         {
             get => valueCached;
@@ -18,6 +27,8 @@ namespace Foolish.Stats
             }
         }
         private T valueCached;
+        public event Action<T> OnValueChanged = delegate {};
+#endif
         HashSet<ICyclicDisposable> disposables;
         bool ICyclicDisposable.IsDisposed => isDisposed;
         bool isDisposed;
@@ -29,9 +40,9 @@ namespace Foolish.Stats
             disposables = new();
             this.needCyclicDispose = needCyclicDispose;
             isDisposed = false;
+
         }
 
-        public event Action<T> OnValueChanged = delegate {};
         protected abstract void DisposeRaw();
 
         protected void AddDecoratorToDisposable<TV>(IStatDecorator<TV> decorator)
@@ -59,6 +70,9 @@ namespace Foolish.Stats
             if(isDisposed)
                 return;
             isDisposed = true;
+#if R3
+            valueCached?.Dispose();
+#endif
             DisposeRaw();
             foreach (var disposable in disposables)
             {

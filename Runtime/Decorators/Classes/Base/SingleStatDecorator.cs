@@ -1,3 +1,8 @@
+#if R3
+using System;
+using R3;
+#endif
+
 namespace Foolish.Stats
 {
     /// <summary>
@@ -5,6 +10,9 @@ namespace Foolish.Stats
     /// </summary>
     public abstract class SingleStatDecorator<T> : AbstractStatDecorator<T>
     {
+#if R3
+        IDisposable disposable; 
+#endif
         /// <summary>
         /// Current value provider
         /// </summary>
@@ -15,12 +23,20 @@ namespace Foolish.Stats
             {
                 if (valueProviderCached is not null)
                 {
+#if R3
+                    disposable?.Dispose();
+#else
                     valueProviderCached.OnValueChanged -= CalculateResultValue;
+#endif
                 }
 
                 valueProviderCached = value;
+#if R3
+                disposable = valueCached.Subscribe(CalculateResultValue);
+#else
                 valueProviderCached.OnValueChanged += CalculateResultValue;
                 CalculateResultValue(valueProviderCached.Value);
+#endif
             }
         }
         
@@ -34,7 +50,12 @@ namespace Foolish.Stats
 
         protected void CalculateResultValue(T wrappedValue)
         {
-            Value = CalculateResultValueInternal(wrappedValue);
+#if R3
+            valueCached.Value =
+#else
+            Value =
+#endif
+            CalculateResultValueInternal(wrappedValue);
         }
 
         /// <summary>
@@ -46,7 +67,11 @@ namespace Foolish.Stats
         {
             if (valueProviderCached is not null)
             {
+#if R3
+                disposable?.Dispose();
+#else
                 valueProviderCached.OnValueChanged -= CalculateResultValue;
+#endif
             }
         }
     }

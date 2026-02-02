@@ -11,18 +11,17 @@ namespace Foolish.Stats
             float sum = 0f;
             foreach (var valueProvider in ValueProviders)
             {
+#if R3
+                sum += valueProvider.ReactiveValue.CurrentValue;
+#else
                 sum += valueProvider.Value;
+#endif
             }
-    
+#if R3
+            valueCached.Value = sum;
+#else
             Value = sum;
-        }
-
-        protected override void DisposeRaw()
-        {
-            foreach (var valueProvider in ValueProviders)
-            {
-                valueProvider.OnValueChanged -= RefreshAllStats;
-            }
+#endif
         }
     }
 }

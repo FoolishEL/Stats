@@ -1,0 +1,16 @@
+{
+    "name": "Foolish.Stats.Builder",
+    "rootNamespace": "Foolish.Stats.Builder",
+    "references": [
+        "GUID:af0cca29daf474170b108a857b968f27"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

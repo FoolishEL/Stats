@@ -16,7 +16,11 @@ namespace Foolish.Stats
             set
             {
                 additiveValueCached = value;
+#if R3
+                CalculateResultValue(ValueProvider.ReactiveValue.CurrentValue);
+#else
                 CalculateResultValue(ValueProvider.Value);
+#endif
             }
         }
 

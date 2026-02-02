@@ -1,4 +1,8 @@
+#if R3
+using R3;
+#else
 using System;
+#endif
 
 namespace Foolish.Stats
 {
@@ -8,6 +12,12 @@ namespace Foolish.Stats
     /// <remarks>the value is mutable</remarks>
     public sealed class CoreValueProvider<T> : IStatDecorator<T>
     {
+#if R3
+        public ReadOnlyReactiveProperty<T> ReactiveValue => valueCached;
+        public T Value => valueCached.Value;
+
+        ReactiveProperty<T> valueCached;
+#else
         /// <summary>
         /// value of decorator
         /// </summary>
@@ -23,10 +33,18 @@ namespace Foolish.Stats
         T currentValueCached;
         
         public event Action<T> OnValueChanged = delegate { };
-
+#endif
+        
         /// <summary>
         /// create new CoreValueProvider with given value
         /// </summary>
-        public CoreValueProvider(T initialValue) => Value = initialValue;
+        public CoreValueProvider(T initialValue)
+        {
+#if R3
+            valueCached = new(initialValue);
+#else
+            Value = initialValue;
+#endif
+        }
     }
 }

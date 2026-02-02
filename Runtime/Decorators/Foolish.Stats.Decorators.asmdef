@@ -1,0 +1,14 @@
+{
+    "name": "Foolish.Stats.Decorators",
+    "rootNamespace": "Foolish.Stats.Decorators",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

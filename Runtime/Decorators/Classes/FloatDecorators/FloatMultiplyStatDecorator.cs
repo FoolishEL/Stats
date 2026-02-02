@@ -9,7 +9,14 @@ namespace Foolish.Stats
         {
         }
         protected override float CalculateResultValueInternal(float wrappedValue) => wrappedValue * operationValueProvider.Value;
-        protected override void OnOperationValueChanged(float value) => Value = ValueProvider.Value * operationValueProvider.Value;
+        protected override void OnOperationValueChanged(float value)
+        {
+#if R3
+            valueCached.Value = ValueProvider.ReactiveValue.CurrentValue * operationValueProvider.Value;
+#else
+            Value = ValueProvider.Value * operationValueProvider.Value;
+#endif
+        }
     }
 
     /// <summary>
@@ -21,6 +28,13 @@ namespace Foolish.Stats
         {
         }
         protected override float CalculateResultValueInternal(float wrappedValue) => wrappedValue * operationValueProvider.Value;
-        protected override void OnOperationValueChanged(int value) => Value = value * operationValueProvider.Value;
+        protected override void OnOperationValueChanged(int value)
+        {
+#if R3
+            valueCached.Value = value * operationValueProvider.Value;
+#else
+            Value = value * operationValueProvider.Value;
+#endif
+        }
     }
 }
